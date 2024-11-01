@@ -4,15 +4,12 @@ import cors from "cors";
 import { createServer } from "node:http";
 
 import { socketIo } from "./socketIo.js";
+import authRouter from "./routes/authRoutes.js";
 
 const app = express();
 const server = createServer(app);
 
 socketIo(server);
-// const io = new Server(server);
-// io.on("connection", (socket) => {
-//   console.log("user connected");
-// });
 
 app.use(
   cors({
@@ -29,8 +26,6 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  res.send("hello");
-});
+app.use("/auth", authRouter);
 
 export { server };
